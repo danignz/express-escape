@@ -3,7 +3,6 @@ const router = express.Router();
 const User = require("../models/User");
 const bcrypt = require("bcrypt");
 const saltRounds = 10;
-//const isLoggedIn = require('../middlewares');
 
 router.get("/signup", (req, res, next) => {
   res.render("auth/signup");
@@ -44,9 +43,9 @@ router.get("/login", async (req, res, next) => {
 });
 
 router.post("/login", async (req, res, next) => {
-  const { name, password } = req.body;
+  const { email, password } = req.body;
   // Check if user introduced all values
-  if (!name || !password) {
+  if (!email || !password) {
     res.render("auth/login", {
       error: "All fields are mandatory. Please fill them before submitting.",
     });
@@ -54,11 +53,11 @@ router.post("/login", async (req, res, next) => {
   }
   try {
     // Check if user exists on our DB
-    const user = await User.findOne({ name: name });
+    const user = await User.findOne({ email: email });
     // If they don't, send them error message
     if (!user) {
       res.render("auth/login", {
-        error: "Username is not registered. Try with another one.",
+        error: "Email is not registered. Try with another one.",
       });
       return;
     } else {
