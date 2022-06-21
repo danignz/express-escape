@@ -6,9 +6,10 @@ const User = require("../models/User");
 const Enigma = require("../models/Enigma");
 
 router.get("/", isLoggedIn, async (req, res, next) => {
+  const user = req.session.currentUser;
   try {
     const enigmas = await Enigma.find({});
-    res.render("enigmas/enigmas", { enigmas });
+    res.render("enigmas/enigmas", { enigmas, user });
   } catch (error) {
     next(error);
   }
